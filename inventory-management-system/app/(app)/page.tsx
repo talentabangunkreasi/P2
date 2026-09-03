@@ -15,12 +15,17 @@ import { getDashboardStats } from '@/lib/queries/dashboard'
 import { StatCard } from '@/components/dashboard/stat-card'
 import { BrandLogo } from '@/components/brand-logo'
 
+const EMPTY_STATS = {
+  totalProducts: 0,
+  totalCategories: 0,
+  totalWarehouses: 0,
+  totalRacks: 0,
+}
+
 export default async function HomePage() {
-  const [profile, stats] = await Promise.all([
-    requireProfile(),
-    getDashboardStats(),
-  ])
+  const profile = await requireProfile()
   const admin = isAdminRole(profile.role)
+  const stats = admin ? await getDashboardStats() : EMPTY_STATS
   const firstName = profile.full_name?.split(' ')[0]
 
   return (
