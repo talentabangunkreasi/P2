@@ -29,10 +29,16 @@ export function readLocalActivity(): ActivityLog[] {
   try { return JSON.parse(localStorage.getItem(ACTIVITY_KEY) ?? '[]') } catch { return [] }
 }
 export function saveLocalItem(item: LocalItem) {
-  const items = [item, ...readLocalItems()]
+  const normalizedItem = { ...item, warehouse: item.warehouse === 'Gudang 2' ? 'Gudang 2' : 'Gudang 1', rack: item.rack.trim() || '-' }
+  const items = [normalizedItem, ...readLocalItems()]
   localStorage.setItem(ITEMS_KEY, JSON.stringify(items))
   const logs = [{ id: crypto.randomUUID(), type: 'in' as const, message: `Menambahkan barang: ${item.name} - ${item.stock} unit`, createdAt: item.createdAt }, ...readLocalActivity()]
   localStorage.setItem(ACTIVITY_KEY, JSON.stringify(logs))
   window.dispatchEvent(new CustomEvent('talenta-inventory-updated'))
 }
+export function deleteLocalItem(id: string) {
+  localStorage.setItem(ITEMS_KEY, JSON.stringify(readLocalItems().filter((item) => item.id !== id)))
+  window.dispatchEvent(new CustomEvent(localInventoryEvent))
+}
+
 export const localInventoryEvent = 'talenta-inventory-updated'
