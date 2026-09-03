@@ -106,9 +106,19 @@ export default function LoginPage() {
           className="mt-3 h-11 w-full text-base"
           onClick={async () => {
             setIsLoading(true)
-            await fetch('/api/auth/guest', { method: 'POST' })
-            router.push('/')
-            router.refresh()
+            setError(null)
+            try {
+              const response = await fetch('/api/auth/guest', { method: 'POST' })
+              if (!response.ok) {
+                throw new Error('Guest session bootstrap failed')
+              }
+              router.push('/dashboard')
+              router.refresh()
+            } catch {
+              setError('Mode Guest tidak dapat dimulai. Silakan coba lagi.')
+            } finally {
+              setIsLoading(false)
+            }
           }}
           disabled={isLoading}
         >
