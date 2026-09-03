@@ -29,7 +29,7 @@ export default function LoginPage() {
         setError('Email atau kata sandi salah.')
         return
       }
-      router.push('/')
+      router.push('/dashboard')
       router.refresh()
     } catch {
       setError('Terjadi kesalahan. Silakan coba lagi.')
