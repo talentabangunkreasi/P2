@@ -6,7 +6,12 @@ import { Home, Search, ClipboardList, User } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const items = [
-  { href: '/', label: 'Home', icon: Home, match: (p: string) => p === '/' },
+  {
+    href: '/dashboard',
+    label: 'Home',
+    icon: Home,
+    match: (p: string) => p === '/' || p === '/dashboard',
+  },
   {
     href: '/cari',
     label: 'Cari',
